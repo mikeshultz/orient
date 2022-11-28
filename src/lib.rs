@@ -47,8 +47,6 @@ impl ConfiguredDevice {
         let mut flash = device.FLASH.constrain();
         let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
-        let clk = clocks.sysclk().0;
-
         let mut gpiob = device.GPIOB.split(&mut rcc.ahb);
         let mut gpioe = device.GPIOE.split(&mut rcc.ahb);
         let mut gpiof = device.GPIOF.split(&mut rcc.ahb);

@@ -65,7 +65,7 @@ impl Stepper {
         let duty_cycle = pwm_pulse.get_max_duty() / 2; // 50%
         pwm_pulse.set_duty(duty_cycle);
 
-        hprintln!("Done configuring Stepper.");
+        hprintln!("Done configuring Stepper.").ok();
 
         Ok(Self {
             pin_enable,

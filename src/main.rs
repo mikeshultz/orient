@@ -36,7 +36,7 @@ mod app {
     fn init(cx: init::Context) -> (Shared, Local, init::Monotonics) {
         hprintln!("Configuring device").ok();
 
-        let mut board = ConfiguredDevice::new(cx.device);
+        let board = ConfiguredDevice::new(cx.device);
         let tick = Systick::new(cx.core.SYST, board.clocks.sysclk().0);
         let mono = init::Monotonics(tick);
 
@@ -60,7 +60,7 @@ mod app {
     }
 
     #[idle]
-    fn idle(cx: idle::Context) -> ! {
+    fn idle(_: idle::Context) -> ! {
         hprintln!("sleeping...").ok();
         loop {
             // Now Wait For Interrupt is used instead of a busy-wait loop
@@ -107,7 +107,7 @@ mod app {
 
     /// Enable the stepper in the given direction
     #[task(priority = 1, shared = [board, stepper_enabled])]
-    fn enable_stepper(mut cx: enable_stepper::Context, direction: CircularDirection) {
+    fn enable_stepper(cx: enable_stepper::Context, direction: CircularDirection) {
         let mut board = cx.shared.board;
         let mut enabled = cx.shared.stepper_enabled;
 
@@ -122,7 +122,7 @@ mod app {
 
     /// Disable the stepper
     #[task(priority = 1, shared = [board, stepper_enabled])]
-    fn disable_stepper(mut cx: disable_stepper::Context) {
+    fn disable_stepper(cx: disable_stepper::Context) {
         let mut board = cx.shared.board;
         let mut enabled = cx.shared.stepper_enabled;
 
@@ -134,7 +134,7 @@ mod app {
 
     /// Update the bearing toward north from the compass
     #[task(priority = 2, shared = [bearing_north, board])]
-    fn update_bearing(mut cx: update_bearing::Context) {
+    fn update_bearing(cx: update_bearing::Context) {
         let mut board = cx.shared.board;
         let mut bearing_north = cx.shared.bearing_north;
 
